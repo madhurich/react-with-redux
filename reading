@@ -72,4 +72,14 @@ use the new states that are returned by the store.
  Component
 
  REFER "http://stackoverflow.com/questions/34130539/uncaught-error-invariant-violation-element-type-is-invalid-expected-a-string" for errors in
- including your user component from components			
+ including your user component from components		
+ 
+ TO BRANCH IN GIT
+ >you gotta branch, when there's master, so for that you need to commit first.
+ >and then first
+ 		git init
+		git add .
+		git commit -m "msg"
+		git branch branchname
+		git branch     --->(check whether the branch is creatd or not)
+		git checkout branchname
