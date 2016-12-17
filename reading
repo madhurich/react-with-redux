@@ -1,122 +1,72 @@
-REDUX:
+CONNECTING OUR APP TO REDUX.
 
-This is used to handle many state changes in the
-components.
+  *** FIRST RUN THE COMMAND npm istall --save react-redux***
 
-Before redux, if we want to change the state we first inform to the parent
-and then inside of it the state gets changed and now the new state will
-be passed back to the child component.
+  	this makes us to use redux along with our app.
+  	NOTE: YOU got an error while installing this, because you put the project name
+  	to be "react-redux" and the package you want to install has also the
+  	same name. So YOU CHANGED THE PROJECT NAME, then the error is resolved.
 
+1. Inorder to connect our App, first we need to
+give our App access to the store, so that it will be able to
+use the new states that are returned by the store.
 
-But with the above approach it gets difficult to manage states, if there
-are many components. 
-So, now to avoid that difficulty we use REDUX.
-
-
-WITH REDUX
-1. In order to change the state, first we need to pass in the old state
-to the "REDUCER", this reducer has the functions or methods that are to be 
-performed on this old state, and then the new state will be stored
-inside of the "STORE", from the store we can pass on the modified new
-states to the required components.
-
-CODING WITH REDUX
-1. First we need to install and save "redux" in our app
-			run --> npm install --save redux
-2. You can see redux added to your dependencies.			
-
-			i) import {createStore} from 'redux';
-			ii) create store 
-					const store = createStore(reducer, 5);
-			iii) create reducer
-					const reducer = (state, action) => {
-						switch(action.type){
-							case "MULTIPLY":
-							state = state + action.payLoad;
-							break;
-						}
-						return state;
-					}
-			iv) dispatch the actions to store
-					store.dispatch({
-						type: "MULTIPLY",
-						payLoad: 3
-					})
-									
-YOU GOT AN ERROR WHILE USING "spread" and "rest" operators
-
-1. Spread operator worked, when you installed
-		npm install --save-dev babel-plugin-transform-object-rest-spread
-	BUT as REST it din't work
+2.To do that wrap the App component inside of the Provider.
 	
-	REFER THIS TO EXACLTY KNOW THE DIFFERENCE "https://github.com/sebmarkbage/ecmascript-rest-spread"	
+	ReactDOM.render(
+	<Provider store={store}>
+		<App/>
+	</Provider>,
+ 	document.getElementById('app')
+ );
 
-2. You are using this operators because the REST operator, creates a
-NEW OBJECT and copies the content of old one to new one, so that the newly changed
-value is sustained (in an immutable way) and the when it is changed again due to other actions, that doesn't change the
-previous value.	
+ 3.Import the Provider from react-redux.
+ 
+ 4. Now you need to conenct the application (our app with the redux).
+ 	To do that use the "connect" provided by react-redux.
 
-MULTIPLE REDUCERS
-1. We can have multiple reducers for multiple purposes, so we can
-do that by creating two reducers and their respective dispatching actions.
-	BUT THE KEY THING HERE TO UNDERSTAND IS
-		OUR store accepts only ONE reducer and not more.
-		So what we do is combine the number of reducers (what ever the number of
-		reducers we may use) into one and pass these multiple reducers as objects 
-		to the store.
-		see below
-			const store = createStore(combineReducers({reducerOne, reducerTwo}));
+ 	WE can connect our app as
+ 	 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-			this is done by using "combineReducers" which we need to import at the top
-			before using it.
-			import {createStore, combineReducers} from 'redux';
+ 	 at the end of our App component.
+ 	 Since we are using "export default" to export the App,
+ 	 there's no need to use "curly" braces while importing App in the
+ 	 index.js file.
 
-	ONE MORE KEY POINT TO NOTE
-	entire application has ONE AND ONLY one big (this big may be combination
-	of many states) state, but it has only ONE STATE.
-	and the multiple states that we created will become "SUBSTATES".
+ 	REFER "https://www.youtube.com/watch?v=tfuZ7uZmVyg&index=7&list=PL55RiY5tL51rrC3sh8qLiYHqUV3twEYU_" 
 
-	THIS YOU CAN ACTUALLY SEE IN THE BROWSER, look when we log out
-	the state returned has one big state that has two states that are
-	returned by "mathReducer"s state and "userReducer"s	state.
+ 
+ 5. You did the process that is explained in the video.
 
-	EACH TIME WHEN A STATE IS RETURNED IT HAS BOTH THESE STATES IN ONE BIG
-	STATE.	
+ 	and also You connected your Main component to the redux
+ 	and you dispatched actions directly from the main component in Main.js file
 
-MIDDLEWARE
-> Generally what we do is we dispatch the action and, if that action
-is found in the reducer, then that action will be performed or executed by
-the reducer and then it returns the new state to the store.
+ 	First you just defined mapDispatchToProps in Main.js file and just connected that
+ 	to your Main component, but it gave you an ERROR saying "dispatch is not a function"
 
->In this preocess, when the action is dispatched to the reducer,
-before actually the reducer processes this action, sometimes
-we need to perform another actions, this is where MIDDLEWARE comes into
-picture.
+ 	So it's important to define the mapStateToProps as well, because when you are
+ 	dispatching the actions, it is changing the state, so we also need to define the
+ 	mapStateToProps in Main.js. But we don't need to define dispathcing in the App component
+ 	since we are not using anything related to dispatching there.
 
->So, Middleware is something which is executed when the action
-is dispatched to the reducer and before the reducer performs that action. That 
-means after our middleware actions are done, then only our
-reducer's actions will be executed.
+ 	so you just connected the props to App component.
 
->For this we need a module called "applyMiddleware()" we need to import that
-first from the redux packg
+ PROJECT FOLDER STRUCTURE
+ >When our components are not connected with the Redux, they are
+ said to be "DUMB" Components, the components that are connected
+ to the Redux are said to be "SMART" components.
 
->This applyMiddleware() takes in the middleware actions
-as the parameters that we need to perform,before the reducer performs
-the action.
+ >Change the components that are not connected to redux, in your folder
+ you changed the User component, since you connected both the App and
+ Main Component. So
+ 		components
+ 			--User.js --> Dumb Component
+ 		containers
+ 			--App.js    } --these are Smart Components
+ 			--Main.js	}
 
->We can also pass in the method called "logger" which can be imported from
-the package "redux-logger" (before using this frst install the redux-logger into
-your dependencies by running "npm install --save redux-logger").
+ NOTE: WHEN you are not using export default, you need to specify
+ curly braces surrounding the component while importing it.
 
->and then import the logger from the redux-logger and start using that.
-
->Specify this logger() as aparameter inside of the applyMiddleware().
-
->From this logger we can see how the state is being changed
-		we can see 
-				Prev state
-				Action performed
-				Next state
-			after our middleware action called "madlogger" and
-			the reducer's actions are being executed.		
+ Here you got an ERROR when you omitted the curly braces for User
+ Component			
