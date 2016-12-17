@@ -69,4 +69,7 @@ use the new states that are returned by the store.
  curly braces surrounding the component while importing it.
 
  Here you got an ERROR when you omitted the curly braces for User
- Component			
+ Component
+
+ REFER "http://stackoverflow.com/questions/34130539/uncaught-error-invariant-violation-element-type-is-invalid-expected-a-string" for errors in
+ including your user component from components			
